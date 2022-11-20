@@ -4,6 +4,19 @@
   
   
   <entry>
+    <title>HELLO WORLD!</title>
+    <link href="/2022/11/20/HELLO-WORLD-0/"/>
+    <url>/2022/11/20/HELLO-WORLD-0/</url>
+    
+    <content type="html"><![CDATA[<h1 id="Hello-World"><a href="#Hello-World" class="headerlink" title="Hello World!"></a>Hello World!</h1><p>终于完成了网站配置的第一阶段。</p>]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>test_my_site</title>
     <link href="/2022/11/20/test-my-site-1/"/>
     <url>/2022/11/20/test-my-site-1/</url>
