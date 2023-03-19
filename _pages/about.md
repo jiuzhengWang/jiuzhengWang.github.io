@@ -2,24 +2,29 @@
 layout: about
 title: about
 permalink: /
-subtitle: <a href='#'>Affiliations</a>. Address. Contacts. Moto. Etc.
+subtitle: 
 
 profile:
   align: right
   image: prof_pic.jpg
   image_circular: false # crops the image to make it circular
   address: >
-    <p>555 your office number</p>
-    <p>123 your address street</p>
-    <p>Your City, State 12345</p>
+    <p>wechat: wang18273147804</p>
+    <p>BIT</p>
+    <p>Beijing, China</p>
 
 news: true  # includes a list of news items
-selected_papers: true # includes a list of papers marked as "selected={true}"
-social: true  # includes social icons at the bottom of the page
+selected_papers: false # includes a list of papers marked as "selected={true}"
+social: false  # includes social icons at the bottom of the page
 ---
 
-Write your biography here. Tell the world about yourself. Link to your favorite [subreddit](http://reddit.com). You can put a picture in, too. The code is already in, just name your picture `prof_pic.jpg` and put it in the `img/` folder.
+Hi! My name is 王九铮. I am an third grade undergraduate in [School of Computer Science & Technology](https://cs.bit.edu.cn/) at Beijing Institute of Technology. I am applying for Ph.D programs for 2024 Fall.
 
-Put your address / P.O. box / other info right below your picture. You can also disable any these elements by editing `profile` property of the YAML header of your `_pages/about.md`. Edit `_bibliography/papers.bib` and Jekyll will render your [publications page](/al-folio/publications/) automatically.
 
-Link to your social media connections, too. This theme is set up to use [Font Awesome icons](http://fortawesome.github.io/Font-Awesome/) and [Academicons](https://jpswalsh.github.io/academicons/), like the ones below. Add your Facebook, Twitter, LinkedIn, Google Scholar, or just disable all of them.
+My research interests lies in a broad topics of **theoretical computer science**. I am currently interested in *sublinear algorithms*.
+
+I am fortunate to be advised by Prof.[Zhengyang Liu](https://lozycs.github.io/) at BIT. Before that, I worked on some topics about **recommendation system** under the guidance of Prof.[Zhida Qin](https://cs.bit.edu.cn/szdw/jsml/fjs/qzd/index.htm) in 2021. I am also advised by Prof.[Changsheng Li](https://cs.bit.edu.cn/szdw/jsml/gjjgccrc/lcs_e253eb02bdf246c4a88e1d2499212546/index.htm) since Fall2022.
+
+Email: [jiuzheng2021@gmail.com](jiuzheng2021@gmail.com)
+
+
