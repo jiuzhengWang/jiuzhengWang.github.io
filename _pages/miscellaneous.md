@@ -5,7 +5,6 @@ title: Miscellaneous
 description: 
 nav: true
 nav_order: 10
-giscus_comments: true
 ---
 
 Like most Chinese students, I can speak both Chinese and English. I am also interested in learning Japanese.
