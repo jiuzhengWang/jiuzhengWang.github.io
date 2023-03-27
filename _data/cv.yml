@@ -18,44 +18,57 @@
         - National Scholarship
         - GPA 92.48/100, Rank 5/217
     - title: Senior High School 
-      institution: Changjun High School(长郡中学), Changsha, China
-      year: 1900
+      institution: Changjun High School of Changsha, Changsha, China
+      year: 2017-2020
       description:
         - Class Monitor in 1701
         - Member of Mathematical Competition Team
 
-# - title: Experience
-#   type: time_table
-#   contents:
-#     - title: Professor of Theoretical Physics
-#       institution: Institute for Advanced Study, Princeton University
-#       year: 1933 - 1955
-#       description:
-#         - Description 1.
-#         - Description 2.
-#         - title: Description 3.
-#           contents:
-#             - Sub-description 1.
-#             - Sub-description 2.
-#     - title: Visiting Professor
-#       institution: California Institute of Technology, Pasadena, California, US
-#       year: 1933
-#       description:
-#         - Description 1.
-#         - Description 2.
+- title: Experience
+  type: time_table
+  contents:
 
-#     - title: Director
-#       institution: Kaiser Wilhelm Institute for Physics, Berlin, Germany.
-#       year: 1917-1933
+    - title: Research Intern, <a href="https://www.bnrist.tsinghua.edu.cn/">Beijing National Research Center for Information Science and Technology</a>
+      institution: Tsinghua University, Beijing, China
+      year: 2023
+      description:
+        - Blockchain and computer network architecture
+        - Advised by <a href="https://www.bnrist.tsinghua.edu.cn/info/1152/2519.htm"> Hao Yin </a>
 
-#     - title: Professor of Theoretical Physics
-#       institution: Karl-Ferdinand University, Prague, Czechoslovakia
-#       year: 1911 - 1917
-#       description:
+    - title: Research Intern, <a href="https://cfcs.pku.edu.cn/english/">Center on Frontiers of Computing Studies</a>
+      institution: Peking University, Beijing, China
+      year: 2023
+      description:
+        - Streaming and sublinear-time algorithms for high-dimensional problems
+        - Advised by <a href="https://shaofengjiang.cn/">Shaofeng H.-C. Jiang</a>
+        # - title: Description 3.
+        #   contents:
+        #     - Sub-description 1.
+        #     - Sub-description 2.
+    - title: Research Intern, Beijing Engineering Research Center of Massive Language Information Processing and Cloud Computing Application
+      institution: Beijing Institute of Technology, Beijing, China
+      year: 2022
+      description:
+        - Bilateral trade problem and Nash social welfare maximization
+        - Advised by <a href="https://lozycs.github.io/">Zhengyang Liu</a>
 
-#     - title: Associate Professor of Theoretical Physics
-#       institution: University of Zurich, Zurich, Switzerland
-#       year: 1909 - 1911
+    - title: Research Intern, Key Laboratory of Digital Performance and Simulation Technology
+      institution: Beijing Institute of Technology, Beijing, China
+      year: 2020-2022
+      description:
+        - Multi-armed bandit problem and recommendation systems
+        - Our work "Self-Supervised Graph Learning via Cross View for Session-based Recommendation" has been submitted to SIGIR'23
+        - Advised by <a href="https://cs.bit.edu.cn/szdw/jsml/fjs/qzd/index.htm">Zhida Qin</a> and <a href="https://scholar.google.com/citations?hl=zh-CN&user=82E7oxoAAAAJ&view_op=list_works&sortby=pubdate">Junyan Liu</a>
+    
+
+    # - title: Professor of Theoretical Physics
+    #   institution: Karl-Ferdinand University, Prague, Czechoslovakia
+    #   year: 1911 - 1917
+    #   description:
+
+    # - title: Associate Professor of Theoretical Physics
+    #   institution: University of Zurich, Zurich, Switzerland
+    #   year: 1909 - 1911
 
 # - title: Open Source Projects
 #   type: time_table
@@ -63,17 +76,54 @@
 #     - title: <a href="https://github.com/alshedivat/al-folio">al-folio</a>
 #       year: 2015-now
 #       description: A beautiful, simple, clean, and responsive Jekyll theme for academics.
+# Selected honor and award
+- title: Selected honor and award
+  type: time_table
+  contents:
+    - year: 2023
+      items:
+        - First prize for academic achivement, <i>Beijing Institute of Technology</i>
+    - year: 2022
+      items: 
+        - Elite League cadres, <i>Beijing Institute of Technology</i>
+        - First prize for academic achivement, <i>Beijing Institute of Technology</i>
+    - year: 2021
+      items: 
+        - National Scholarship, <i>Beijing Institute of Technology</i>
+        - Hunan Xu-Teli award, <i>Beijing Institute of Technology</i>
+        - Outstanding Student Mdoel, <i>Beijing Institute of Technology</i>
+        - Academic Excellence Award, <i>Ruixin Academy, Beijing Institute of Technology</i>
+        - First prize for academic achivement, <i>Beijing Institute of Technology</i>
+    - year: 2020
+      items:
+        - First prize for academic achivement, <i>Beijing Institute of Technology</i>
 
-# - title: Honors and Awards
-#   type: time_table
-#   contents:
-#     - year: 1921
-#       items: 
-#         - Nobel Prize in Physics 
-#         - Matteucci Medal
-#     - year: 2029
-#       items: 
-#         - Max Planck Medal
+- title: Extracurricular Activities
+  type: time_table
+  contents:
+    - year: 2022.9-PRESENT
+      items: 
+      - Vice President, Center of Mathematical Learning and Innovation, <i>Beijing Institute of Technology</i>
+    - year: 2022.4-PRESENT
+      items:
+      - Chairman, Standing Committee of Student Congress, <i>Beijing Institute of Technology</i>
+    - year: 2021.12-2022.4
+      items:
+      - Member, Standing Committee of Student Congress, <i>Beijing Institute of Technology</i>
+    - year: 2021.9-2022.9
+      items:
+      - Vice President, Association of Math Enthusiasts in Center of Mathematical Learning and Innovation, <i>Beijing Institute of Technology</i>
+
+- title: Academic Service
+  type: time_table
+  contents:
+    - year: 2023
+      items:
+      - Head TA, Combinatorics, 2023Spring
+      - Head TA, Algorithmic Game Theory, 2023Spring
+    - year: 2022
+      items: 
+      - Organizer, Seminar of Randomized Algorithms
 
 # - title: Academic Interests
 #   type: nested_list
