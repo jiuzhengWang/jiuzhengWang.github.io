@@ -15,14 +15,13 @@
       institution: Beijing Institute of Technology, Beijing, China
       year: 2020-PRESENT
       description:
-        - National Scholarship
-        - GPA 92.48/100, Rank 5/217
-    - title: Senior High School 
-      institution: Changjun High School of Changsha, Changsha, China
-      year: 2017-2020
-      description:
-        - Class Monitor in 1701
-        - Member of Mathematical Competition Team
+        - GPA <b>92.48/100</b>, Rank <b>5/217</b>
+    # - title: Senior High School 
+    #   institution: Changjun High School of Changsha, Changsha, China
+    #   year: 2017-2020
+    #   description:
+    #     - Class Leader, 1701
+    #     - Member, Mathematical Competition Team
 
 - title: Experience
   type: time_table
@@ -77,53 +76,74 @@
 #       year: 2015-now
 #       description: A beautiful, simple, clean, and responsive Jekyll theme for academics.
 # Selected honor and award
-- title: Selected honor and award
+- title: Selected Honors and Awards
   type: time_table
   contents:
     - year: 2023
       items:
-        - First prize for academic achivement, <i>Beijing Institute of Technology</i>
+        - <b>First Class Scholarship of BIT</b>, <i>Beijing Institute of Technology</i>
     - year: 2022
       items: 
-        - Elite League cadres, <i>Beijing Institute of Technology</i>
-        - First prize for academic achivement, <i>Beijing Institute of Technology</i>
+        - <b>Elite League Cadre</b>, <i>Beijing Institute of Technology</i>
+        - <b>First Class Scholarship of BIT</b>, <i>Beijing Institute of Technology</i>
     - year: 2021
       items: 
-        - National Scholarship, <i>Beijing Institute of Technology</i>
-        - Hunan Xu-Teli award, <i>Beijing Institute of Technology</i>
-        - Outstanding Student Mdoel, <i>Beijing Institute of Technology</i>
-        - Academic Excellence Award, <i>Ruixin Academy, Beijing Institute of Technology</i>
-        - First prize for academic achivement, <i>Beijing Institute of Technology</i>
+        - <b>National Scholarship</b>, <i>Beijing Institute of Technology</i>
+        - <b>Hunan Xu-Teli Award</b>, <i>Beijing Institute of Technology</i>
+        - <b>Pacemaker to Merit Student</b>, <i>Beijing Institute of Technology</i>
+        - <b>Academic Excellence Award</b>, <i>Ruixin Academy, Beijing Institute of Technology</i>
+        - <b>First Class Scholarship of BIT</b>, <i>Beijing Institute of Technology</i>
     - year: 2020
       items:
-        - First prize for academic achivement, <i>Beijing Institute of Technology</i>
+        - <b>First Class Scholarship of BIT</b>, <i>Beijing Institute of Technology</i>
+
+- title: Competition Performances
+  type: time_table
+  contents:
+  - year: 2022
+    items:
+    - <b>First Prize</b>, "Lanqiaobei" National Software and Information Technology Professional Talent Competition in C/C++, Beijing
+    - <b>Second Prize</b>, "Lianshan" Tech Programming Contest
+  - year: 2021
+    items:
+    - <b>First Prize</b>, The Chinese Mathematics Competition
+    - <b>Second Prize</b>, Regional Physics Competition for College Students
+  - year: 2020
+    items:
+    - <b>First Prize</b>, Freshman Mathematics Competition, <i>Beijing Institute of Technology</i>
+  - year: 2019
+    items:
+    - <b>First Prize</b>, Chinese High School Mathematics League
 
 - title: Extracurricular Activities
   type: time_table
   contents:
     - year: 2022.9-PRESENT
       items: 
-      - Vice President, Center of Mathematical Learning and Innovation, <i>Beijing Institute of Technology</i>
+      - <b>Vice President</b>, Center of Mathematical Learning and Innovation, <i>Beijing Institute of Technology</i>
     - year: 2022.4-PRESENT
       items:
-      - Chairman, Standing Committee of Student Congress, <i>Beijing Institute of Technology</i>
+      - <b>Chairman</b>, Standing Committee of Student Congress, <i>Beijing Institute of Technology</i>
     - year: 2021.12-2022.4
       items:
-      - Member, Standing Committee of Student Congress, <i>Beijing Institute of Technology</i>
+      - <b>Member</b>, Standing Committee of Student Congress, <i>Beijing Institute of Technology</i>
     - year: 2021.9-2022.9
       items:
-      - Vice President, Association of Math Enthusiasts in Center of Mathematical Learning and Innovation, <i>Beijing Institute of Technology</i>
+      - <b>Vice President</b>, Association of Math Enthusiasts in Center of Mathematical Learning and Innovation, <i>Beijing Institute of Technology</i>
+    - year: 2020.10-PRESENT
+      items:
+      - <b>League secretary</b>, Class 2001 of Ruixin Academy
 
-- title: Academic Service
+- title: Academic Services
   type: time_table
   contents:
     - year: 2023
       items:
-      - Head TA, Combinatorics, 2023Spring
-      - Head TA, Algorithmic Game Theory, 2023Spring
+      - <b>Head TA</b>, Combinatorics, 2023Spring
+      - <b>Head TA</b>, Algorithmic Game Theory, 2023Spring
     - year: 2022
       items: 
-      - Organizer, Seminar of Randomized Algorithms
+      - <b>Organizer</b>, Seminar of Randomized Algorithms
 
 # - title: Academic Interests
 #   type: nested_list
