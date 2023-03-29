@@ -21,9 +21,9 @@ social: false  # includes social icons at the bottom of the page
 Hi! My name is 王九铮. I'm a junior undergraduate in [School of Computer Science & Technology](https://cs.bit.edu.cn/) at Beijing Institute of Technology. I am applying for Ph.D programs for 2024 Fall.
 
 
-My research interests lies in a broad topics of **theoretical computer science**. I am currently interested in *sublinear algorithms*.
+My research interests lies in a broad topics of **theoretical computer science**. I am currently interested in *sublinear-time algorithms*.
 
-I am fortunate to be advised by Prof.[Zhengyang Liu](https://lozycs.github.io/) at BIT. Before that, I worked on some topics about **recommendation system** under the guidance of Prof.[Zhida Qin](https://cs.bit.edu.cn/szdw/jsml/fjs/qzd/index.htm) in 2021. I have also been instructed by Prof.[Changsheng Li](https://cs.bit.edu.cn/szdw/jsml/gjjgccrc/lcs_e253eb02bdf246c4a88e1d2499212546/index.htm) since Fall 2022. Currently, I am working with Prof.[Shaofeng Jiang](https://shaofengjiang.cn/) on approximating the **Euclidean Minimum Spanning Tree**.
+I am fortunate to be advised by Prof.[Zhengyang Liu](https://lozycs.github.io/) at BIT. Before that, I worked on **recommendation system** under the guidance of Prof.[Zhida Qin](https://cs.bit.edu.cn/szdw/jsml/fjs/qzd/index.htm) in 2021.  Currently, I am working with Prof.[Shaofeng Jiang](https://shaofengjiang.cn/) on approximating the **Euclidean Minimum Spanning Tree**.
 
 
 If you are also interested in TCS, feel free to contact me! Email: [jiuzheng2021@gmail.com](jiuzheng2021@gmail.com)
