@@ -1,3 +1,12 @@
+<!--
+ * @Descripttion: 
+ * @version: 
+ * @Author: jiuzhengWang
+ * @Date: 2023-03-19 18:06:27
+ * @LastEditors: jiuzhengWang
+ * @LastEditTime: 2023-05-24 12:56:36
+ * @Email: jiuzheng2010@126.com
+-->
 ---
 layout: about
 title: about
@@ -22,7 +31,7 @@ social: false  # includes social icons at the bottom of the page
 Hi! My name is 王九铮. I'm a junior undergraduate in [School of Computer Science & Technology](https://cs.bit.edu.cn/) at Beijing Institute of Technology. I am applying for Ph.D programs for 2024 Fall.
 
 
-My research interests lies in a broad topics of **computer system and software**. I am currently interested in *blockchain technology*.
+My research interests lie in a broad topics of **computer system and software**. I am currently interested in *blockchain technology*.
 
 I am fortunate to be advised by Prof.[Hao Yin](https://www.bnrist.tsinghua.edu.cn/info/1152/2519.htm) in Tsinghua University. Before that, I have been working with Prof.[Shaofeng Jiang](https://shaofengjiang.cn/) on *streaming and sublinear-time* algorithms. Earlier in my undergraduate studies, I have been working on *algorithmic game theory* and *machine learning theory* under the guidance of Prof.[Zhengyang Liu](https://lozycs.github.io/) and Prof.[Zhida Qin](https://cs.bit.edu.cn/szdw/jsml/fjs/qzd/index.htm), respectively.
 
