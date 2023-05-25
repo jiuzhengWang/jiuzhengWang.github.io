@@ -9,8 +9,8 @@ profile:
   image: prof_pic.jpg
   image_circular: false # crops the image to make it circular
   address: >
-    <p>wechat: wang18273147804</p>
-    <p>qq: 1615823824</p>
+    <p>WeChat: wang18273147804</p>
+    <p>QQ: 1615823824</p>
     <p>BIT</p>
     <p>Beijing, China</p>
 
