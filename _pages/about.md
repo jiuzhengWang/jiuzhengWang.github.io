@@ -28,6 +28,6 @@ I am fortunate to be advised by Prof.[Hao Yin](https://www.bnrist.tsinghua.edu.c
 
 I was professional in Mathematical Olympiad, and I devoted myself to *theoretical computer science*. Though I've switched my research fields to *computer systems and softwares*, I am still interested in any theoretical problems, and I truly believe my research experience on TCS benefits me a lot.
 
-If you are interested in me, feel free to contact me! Email: [jiuzheng2021@gmail.com](jiuzheng2021@gmail.com)
+If you are interested in me and my research, feel free to contact me! Email: [jiuzheng2021@gmail.com](jiuzheng2021@gmail.com)
 
 
