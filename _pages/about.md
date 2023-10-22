@@ -1,4 +1,3 @@
-//ddddddd
 ---
 layout: about
 title: about
@@ -20,7 +19,7 @@ selected_papers: false # includes a list of papers marked as "selected={true}"
 social: false  # includes social icons at the bottom of the page
 ---
 
-Hi! My name is 王九铮. I'm a junior undergraduate in [School of Computer Science & Technology](https://cs.bit.edu.cn/) at Beijing Institute of Technology. I am applying for Ph.D programs for 2024 Fall.
+Hi! My name is 王九铮. I'm a senior undergraduate in [School of Computer Science & Technology](https://cs.bit.edu.cn/) at Beijing Institute of Technology. I will be a Ph.D candidate in Peking University.
 
 
 My research interests lie in a broad topics of **computer system and software**. I am currently interested in *blockchain technology*.
