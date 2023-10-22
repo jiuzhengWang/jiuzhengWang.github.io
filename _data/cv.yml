@@ -100,6 +100,9 @@
 - title: Competition Performances
   type: time_table
   contents:
+  - year: 2023
+    items:
+    - <b>First Prize</b>, "Lanqiaobei" National Software and Information Technology Professional Talent Competition in C/C++, Beijing
   - year: 2022
     items:
     - <b>First Prize</b>, "Lanqiaobei" National Software and Information Technology Professional Talent Competition in C/C++, Beijing
@@ -118,10 +121,13 @@
 - title: Extracurricular Activities
   type: time_table
   contents:
-    - year: 2022.9-PRESENT
+    - year: 2023.09-PRESENT
+    - items:
+      - <b>League secretary</b>, Class 2005 of Computer Science and Technology, <i>Beijing Institute of Technology</i>
+    - year: 2022.9-2023.9
       items: 
       - <b>Vice President</b>, Center of Mathematical Learning and Innovation, <i>Beijing Institute of Technology</i>
-    - year: 2022.4-PRESENT
+    - year: 2022.4-2023.10
       items:
       - <b>Chairman</b>, Standing Committee of Student Congress, <i>Beijing Institute of Technology</i>
     - year: 2021.12-2022.4
@@ -130,7 +136,7 @@
     - year: 2021.9-2022.9
       items:
       - <b>Vice President</b>, Association of Math Enthusiasts in Center of Mathematical Learning and Innovation, <i>Beijing Institute of Technology</i>
-    - year: 2020.10-PRESENT
+    - year: 2020.10-2023.07
       items:
       - <b>League secretary</b>, Class 2001 of Ruixin Academy
 
@@ -139,8 +145,8 @@
   contents:
     - year: 2023
       items:
-      - <b>Head TA</b>, Combinatorics, 2023Spring
-      - <b>Head TA</b>, Algorithmic Game Theory, 2023Spring
+      - <b>Head TA</b>, Programming in C++, 2023Fall
+      - <b>Head TA</b>, Topics in Algorithmic Game Theory (Equilibrium Computation), 2023Spring
     - year: 2022
       items: 
       - <b>Organizer</b>, Seminar of Randomized Algorithms
