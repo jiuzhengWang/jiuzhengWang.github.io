@@ -23,4 +23,6 @@ Hi! My name is 王九铮. I am a forthcoming Ph.D candidate in [School of Comput
 
 My research interests lie in a broad topics of **computer systems and software**. Currently I am interested in compilation and parallel optimization for AI applications.
 
+I have another personal website just for [blog](https://cerf-volantwang.github.io/). Go and have a look!
+
 If you are interested in me and my research, feel free to contact me! Email: [jiuzheng2021@gmail.com](jiuzheng2021@gmail.com).

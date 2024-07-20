@@ -11,9 +11,12 @@
 - title: Education
   type: time_table
   contents:
+    - title: Ph.D. in Computer Science and Technology
+      institution: Peking University, Beijing, China
+      year: 2024-PRESENT
     - title: B.Eng. in Computer Science and Technology
       institution: Beijing Institute of Technology, Beijing, China
-      year: 2020-PRESENT
+      year: 2020-2024
       description:
         - GPA <b>92.48/100</b>, Rank <b>5/217</b>
     # - title: Senior High School 
@@ -27,12 +30,12 @@
   type: time_table
   contents:
 
-    - title: Research Intern, <a href="https://www.bnrist.tsinghua.edu.cn/">Beijing National Research Center for Information Science and Technology</a>
+    - title: Research Intern, <a href="https://www.cs.tsinghua.edu.cn/csen/">Department of Computer Science and Technology, Tsinghua University</a>
       institution: Tsinghua University, Beijing, China
-      year: 2023
+      year: 2024
       description:
-        - Blockchain and computer network architecture
-        - Advised by <a href="https://www.bnrist.tsinghua.edu.cn/info/1152/2519.htm"> Hao Yin </a>
+        - Compilation optimization for AI application.
+        - Advised by <a href="https://pacman.cs.tsinghua.edu.cn/~zjd/"> Jidong Zhai </a>
 
     - title: Research Intern, <a href="https://cfcs.pku.edu.cn/english/">Center on Frontiers of Computing Studies</a>
       institution: Peking University, Beijing, China
@@ -79,6 +82,9 @@
 - title: Selected Honors and Awards
   type: time_table
   contents:
+    - year: 2024
+      items:
+        - <b>Outstanding Graduate of Beijing</b>
     - year: 2023
       items:
         - <b>First Class Scholarship of BIT</b>, <i>Beijing Institute of Technology</i>
