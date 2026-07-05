@@ -2,6 +2,7 @@
 theme: ./theme
 title: "Scaling Laws for Data Mixing and Continual Pre-training"
 author: 王九铮
+favicon: /slides/scaling_law/brand/pku-emblem-red.png
 themeConfig:
   primary: '#94070A'
 transition: fade-out
