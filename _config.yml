@@ -85,10 +85,10 @@ al_folio:
 
 navbar_fixed: true
 footer_fixed: true
-search_enabled: true
-socials_in_search: true
-posts_in_search: true
-bib_search: true
+search_enabled: false
+socials_in_search: false
+posts_in_search: false
+bib_search: false
 
 # Dimensions
 max_width: 930px
@@ -129,7 +129,7 @@ lsi: false # produce an index for related posts
 
 # Pagination
 pagination:
-  enabled: true
+  enabled: false
 
 related_blog_posts:
   enabled: false
@@ -180,15 +180,15 @@ newsletter:
 
 collections:
   books:
-    output: true
+    output: false
   news:
     defaults:
       layout: post
     output: true
   projects:
-    output: true
+    output: false
   teachings:
-    output: true
+    output: false
 
 # -----------------------------------------------------------------------------
 # Jekyll settings
@@ -211,6 +211,8 @@ kramdown:
 include: ["_pages"]
 exclude:
   - al-folio-upgrade-report.md
+  - AGENTS.md
+  - CLAUDE.md
   - bin/
   - CONTRIBUTING.md
   - CUSTOMIZE.md
@@ -229,11 +231,20 @@ exclude:
   - _pages/about_einstein.md
   - test/
   - purgecss.config.js
+  - assets/audio/
+  - assets/html/relativity.html
+  - assets/img/book_covers/
+  - assets/img/rhino.png
+  - assets/img/template_error.png
+  - assets/json/resume.json
+  - assets/json/table_data.json
   - README.md
   - readme_preview/
   - gems/
   - migrations/
   - assets/jupyter/
+  - assets/rendercv/rendercv_output/
+  - assets/video/
   - vendor
 keep_files:
   - CNAME
@@ -332,7 +343,7 @@ jekyll-archives:
       tags: "/blog/:type/:name/"
       categories: "/blog/:type/:name/"
   books:
-    enabled: [year, tags, categories] # enables year, tag and category archives (remove if you need to disable one of them).
+    enabled: [] # disabled while demo bookshelf content is hidden.
 
 display_tags: ["formatting", "images", "links", "math", "code", "blockquotes"] # these tags will be displayed on the front page of your blog
 display_categories: ["external-services"] # these categories will be displayed on the front page of your blog
