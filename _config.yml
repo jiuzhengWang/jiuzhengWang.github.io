@@ -242,6 +242,7 @@ exclude:
   - readme_preview/
   - gems/
   - migrations/
+  - slides/scaling_law/
   - assets/jupyter/
   - assets/rendercv/rendercv_output/
   - assets/video/

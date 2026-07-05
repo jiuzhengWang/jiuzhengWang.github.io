@@ -1,0 +1,21 @@
+{
+  "name": "slidev-theme-pku",
+  "version": "0.1.0",
+  "type": "module",
+  "keywords": [
+    "slidev-theme",
+    "slidev",
+    "pku",
+    "peking-university"
+  ],
+  "slidev": {
+    "defaults": {
+      "aspectRatio": "4/3",
+      "transition": "fade-out"
+    },
+    "colorSchema": "light"
+  },
+  "engines": {
+    "slidev": ">=52.0.0"
+  }
+}

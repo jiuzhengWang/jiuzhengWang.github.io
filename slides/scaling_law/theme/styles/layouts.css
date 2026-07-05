@@ -1,0 +1,129 @@
+.slidev-layout.cover {
+  display: grid;
+  place-items: center;
+  padding: 70px;
+  text-align: center;
+}
+
+.pku-cover-content {
+  width: min(760px, 100%);
+}
+
+.slidev-layout.cover h1 {
+  margin: 26px 0 18px;
+  color: var(--pku-primary);
+  font-size: 60px;
+  line-height: 1.2;
+  text-align: center;
+}
+
+.pku-cover-emblem {
+  display: block;
+  width: 112px;
+  height: 112px;
+  margin: 22px auto 0;
+  object-fit: contain;
+}
+
+.pku-cover-author {
+  margin: 0;
+  color: var(--pku-muted);
+  font-size: 32px;
+  text-align: center;
+}
+
+.slidev-layout.cover h2,
+.slidev-layout.cover h3 {
+  border: 0;
+  color: var(--pku-muted);
+  text-align: center;
+}
+
+.slidev-layout.section {
+  display: grid;
+  place-items: center;
+  padding: 70px;
+}
+
+.pku-section-content {
+  width: 100%;
+}
+
+.slidev-layout.section h1 {
+  width: 100%;
+  color: var(--pku-primary);
+  text-align: center;
+}
+
+.slidev-layout.section blockquote {
+  max-width: 760px;
+  margin: 28px auto 0;
+  padding: 0;
+  border-left: 0;
+  text-align: center;
+}
+
+.slidev-layout.center {
+  display: grid;
+  place-items: center;
+  text-align: center;
+}
+
+.pku-center-content {
+  max-width: 820px;
+}
+
+.slidev-layout.center h1,
+.slidev-layout.center h2,
+.slidev-layout.center h3,
+.slidev-layout.center h4 {
+  text-align: center;
+}
+
+.slidev-layout.center h2 {
+  border-bottom: 0;
+}
+
+@supports selector(:has(> h1:only-child)) {
+  .slidev-layout.default.pku-theme:has(> h1:only-child) {
+    display: grid;
+    place-items: center;
+    padding: 70px;
+    text-align: center;
+  }
+
+  .slidev-layout.default.pku-theme:has(> h1:only-child) h1 {
+    width: 100%;
+    color: var(--pku-primary);
+    text-align: center;
+  }
+}
+
+.slidev-layout.image-right {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 36%;
+  gap: 34px;
+  align-items: center;
+}
+
+.pku-image-right-content {
+  min-width: 0;
+}
+
+.pku-image-right-media {
+  margin: 0;
+}
+
+.pku-image-right-media img {
+  display: block;
+  width: 100%;
+  max-height: 440px;
+  object-fit: contain;
+}
+
+.pku-image-right-media figcaption {
+  margin-top: 8px;
+  color: var(--pku-muted);
+  font-size: 15px;
+  text-align: center;
+}

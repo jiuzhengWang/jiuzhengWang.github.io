@@ -24,11 +24,21 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: slides/scaling_law/package-lock.json
+
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: .ruby-version
           bundler-cache: true
+
+      - name: Install Slidev dependencies
+        run: npm ci --prefix slides/scaling_law
 
       - name: Setup Pages
         id: pages
@@ -38,6 +48,12 @@ jobs:
         run: bundle exec jekyll build --baseurl "${{ steps.pages.outputs.base_path }}"
         env:
           JEKYLL_ENV: production
+
+      - name: Build Slidev decks
+        run: npm run build --prefix slides/scaling_law -- --base /slides/scaling_law/ --out ../../_site/slides/scaling_law
+
+      - name: Add Slidev route fallbacks
+        run: node bin/build-slidev-fallbacks.mjs scaling_law
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

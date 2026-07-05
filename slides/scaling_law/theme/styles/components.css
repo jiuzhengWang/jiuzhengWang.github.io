@@ -1,0 +1,201 @@
+.pku-author-block {
+  margin-top: 34px;
+  color: var(--pku-ink);
+}
+
+.pku-author-name {
+  margin: 0 0 8px;
+  font-family: "Kaiti SC", "STKaiti", KaiTi, serif;
+  font-size: 30px;
+}
+
+.pku-author-line {
+  margin: 4px 0;
+  color: var(--pku-muted);
+  font-family: "Kaiti SC", "STKaiti", KaiTi, serif;
+  font-size: 23px;
+}
+
+.pku-affiliations {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.pku-affiliation {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--pku-muted);
+  border-bottom: 0;
+  font-size: 18px;
+}
+
+.pku-affiliation img {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+}
+
+.pku-brand-lockup {
+  display: block;
+  width: 320px;
+  max-width: 100%;
+  object-fit: contain;
+}
+
+.pku-callout {
+  margin: 0.8em 0;
+  padding: 16px 18px 16px 20px;
+  background: rgba(148, 7, 10, 0.06);
+  border-left: 4px solid var(--pku-primary);
+  border-radius: 6px;
+}
+
+.pku-callout[data-type="question"] {
+  background: rgba(176, 138, 79, 0.12);
+  border-left-color: var(--pku-gold);
+}
+
+.pku-callout[data-type="warning"] {
+  background: rgba(148, 7, 10, 0.1);
+}
+
+.pku-callout strong {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--pku-primary);
+}
+
+.pku-callout p:last-child {
+  margin-bottom: 0;
+}
+
+.pku-reveal-controls {
+  position: fixed;
+  top: auto;
+  right: 12px;
+  bottom: 12px;
+  left: auto;
+  z-index: 80;
+  color: var(--pku-primary);
+  font-size: 10px;
+  pointer-events: none;
+}
+
+.pku-reveal-controls button {
+  position: absolute;
+  z-index: 2;
+  padding: 0;
+  color: currentColor;
+  background: transparent;
+  border: 0;
+  outline: 0;
+  cursor: pointer;
+  font-size: inherit;
+  opacity: 0;
+  pointer-events: auto;
+  transform: scale(0.9999);
+  transition: color 0.2s ease, opacity 0.2s ease, transform 0.2s ease;
+  visibility: hidden;
+  -webkit-appearance: none;
+  appearance: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.pku-reveal-controls .controls-arrow {
+  display: block;
+  position: relative;
+  width: 3.6em;
+  height: 3.6em;
+}
+
+.pku-reveal-controls .controls-arrow::before,
+.pku-reveal-controls .controls-arrow::after {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 2.6em;
+  height: 0.5em;
+  background-color: currentColor;
+  border-radius: 0.25em;
+  content: "";
+  transform-origin: 0.2em 50%;
+  transition: all 0.15s ease, background-color 0.8s ease;
+  will-change: transform;
+}
+
+.pku-reveal-controls .controls-arrow::before {
+  transform: translateX(0.5em) translateY(1.55em) rotate(45deg);
+}
+
+.pku-reveal-controls .controls-arrow::after {
+  transform: translateX(0.5em) translateY(1.55em) rotate(-45deg);
+}
+
+.pku-reveal-controls button:hover .controls-arrow::before {
+  transform: translateX(0.5em) translateY(1.55em) rotate(40deg);
+}
+
+.pku-reveal-controls button:hover .controls-arrow::after {
+  transform: translateX(0.5em) translateY(1.55em) rotate(-40deg);
+}
+
+.pku-reveal-controls button:active .controls-arrow::before {
+  transform: translateX(0.5em) translateY(1.55em) rotate(36deg);
+}
+
+.pku-reveal-controls button:active .controls-arrow::after {
+  transform: translateX(0.5em) translateY(1.55em) rotate(-36deg);
+}
+
+.pku-reveal-controls .navigate-left {
+  right: 6.4em;
+  bottom: 3.2em;
+  transform: translateX(-10px);
+}
+
+.pku-reveal-controls .navigate-right {
+  right: 0;
+  bottom: 3.2em;
+  transform: translateX(10px);
+}
+
+.pku-reveal-controls .navigate-right .controls-arrow {
+  transform: rotate(180deg);
+}
+
+.pku-reveal-controls .navigate-down {
+  right: 3.2em;
+  bottom: -1.4em;
+  padding-bottom: 1.4em;
+  transform: translateY(10px);
+}
+
+.pku-reveal-controls .navigate-down .controls-arrow {
+  transform: rotate(-90deg);
+}
+
+.pku-reveal-controls .enabled {
+  cursor: pointer;
+  opacity: 0.9;
+  transform: none;
+  visibility: visible;
+}
+
+.pku-reveal-controls .enabled:hover {
+  opacity: 1;
+}
+
+.pku-reveal-controls button:disabled {
+  cursor: default;
+}
+
+.pku-reveal-controls[data-controls-back-arrows="faded"] .navigate-left.enabled {
+  opacity: 0.3;
+}
+
+.pku-reveal-controls[data-controls-back-arrows="faded"] .navigate-left.enabled:hover {
+  opacity: 1;
+}
