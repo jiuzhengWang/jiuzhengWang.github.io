@@ -1,4 +1,4 @@
-source 'http://rubygems.org'
+source 'https://rubygems.org'
 group :jekyll_plugins do
     gem 'classifier-reborn'
     gem 'jekyll'
@@ -15,6 +15,7 @@ group :jekyll_plugins do
     gem 'jekyll-twitter-plugin'
     gem 'jemoji'
     gem 'mini_racer'
+    gem 'ostruct'
     gem 'unicode_utils'
     gem 'webrick'
 end
