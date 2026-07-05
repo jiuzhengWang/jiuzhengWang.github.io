@@ -38,6 +38,8 @@ jobs:
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
+        with:
+          name: jiuzhengwang-pages
 
   deploy:
     environment:
@@ -49,3 +51,5 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v5
+        with:
+          artifact_name: jiuzhengwang-pages
