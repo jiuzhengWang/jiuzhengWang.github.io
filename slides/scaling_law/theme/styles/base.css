@@ -118,6 +118,12 @@
   padding: 0 25px;
 }
 
+.slidev-layout.pku-theme > .red {
+  display: block;
+  margin: 0.8em 0;
+  padding: 0 25px;
+}
+
 .slidev-layout.pku-theme strong {
   font-weight: 600;
 }
@@ -174,12 +180,12 @@
   margin-bottom: 15px;
   border-collapse: collapse;
   font-family: "Lato", "STHeiti", "SimHei", sans-serif;
-  font-size: 32px;
+  font-size: 28px;
 }
 
 .slidev-layout.pku-theme th,
 .slidev-layout.pku-theme td {
-  padding: 0.38em 0.48em;
+  padding: 0.32em 0.42em;
   border: 1px solid var(--pku-line);
 }
 

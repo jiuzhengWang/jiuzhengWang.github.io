@@ -1,6 +1,6 @@
 ---
 theme: ./theme
-title: "Scaling Laws for Data Mixing and Continual Pre-training"
+title: "Scaling Laws for Continual Learning of LLMs"
 author: 王九铮
 favicon: /slides/scaling_law/brand/pku-emblem-red.png
 themeConfig:
@@ -11,7 +11,7 @@ drawings:
 mdc: true
 ---
 
-# Scaling Laws for Data Mixing and Continual Pre-training
+# Scaling Laws for Continual Learning of LLMs
 
 <p class="pku-cover-author">王九铮</p>
 
@@ -19,319 +19,670 @@ mdc: true
 
 ---
 
-## 汇报主线
+## 汇报问题
 
-本次汇报围绕 scaling law 在大模型预训练中的三类问题展开：
+本次汇报讨论的是：
 
-- 经典 scaling law：模型规模、数据规模、算力预算与验证 loss 的关系
-- data mixing：当数据由多个来源构成时，混合比例如何进入建模
-- continual pre-training：继续预训练中的领域收益与通用能力保持
+<red>当大模型训练过程中引入新的领域数据，如何提升新领域能力，同时保持已有能力？</red>
+
+这里首先要区分新领域数据进入的阶段。
+
+不同阶段对应不同问题：
+
+- 预训练阶段：数据在训练前已经准备好
+- 持续预训练阶段：已有模型之后再加入新领域语料
+- 指令微调和对齐阶段：新任务、新格式或新偏好进入训练
+- 推理阶段：新知识不一定写入参数
+
+----
+
+## 大模型训练-部署流程
+
+<div class="training-flow">
+  <div class="flow-stage flow-focus">
+    <strong>预训练</strong>
+    <span>多域语料<br>静态配比</span>
+  </div>
+  <div class="flow-arrow">→</div>
+  <div class="flow-stage flow-focus">
+    <strong>持续预训练</strong>
+    <span>新领域语料<br>replay</span>
+  </div>
+  <div class="flow-arrow">→</div>
+  <div class="flow-stage">
+    <strong>指令微调</strong>
+    <span>任务格式<br>指令数据</span>
+  </div>
+  <div class="flow-arrow">→</div>
+  <div class="flow-stage">
+    <strong>强化学习</strong>
+    <span>偏好数据<br>奖励模型</span>
+  </div>
+  <div class="flow-arrow">→</div>
+  <div class="flow-stage">
+    <strong>推理部署</strong>
+    <span>RAG<br>工具调用</span>
+  </div>
+</div>
 
 <hr>
 
-目标是明确这些工作的<red>变量、公式含义、适用边界和实验设计方式</red>。
+本次重点讨论前两个阶段：预训练和持续预训练中的新领域数据引入。
+
+----
+
+## 横向与纵向持续学习
+
+**[Continual Learning of Large Language Models: A Comprehensive Survey](https://arxiv.org/abs/2404.16789)** 将 LLM 持续学习分为两个方向：
+
+| 方向 | 含义 | 对应阶段 |
+|---|---|---|
+| 横向持续学习 | 跨时间、领域、知识源适配 | 预训练、持续预训练、推理 |
+| 纵向持续学习 | 从通用能力到具体任务能力适配 | CPT、指令微调、对齐 |
+
+本次汇报主要关注横向持续学习中的预训练和持续预训练问题。
+
+----
+
+## 方法与训练阶段的关系
+
+| 阶段 | 新数据形式 | 常见方法 |
+|---|---|---|
+| 预训练 | 已知多域语料 | data mixing、质量加权、去重 |
+| 持续预训练 | 新领域语料 + 旧域 replay | CPT scaling law、CMR、LR schedule |
+| 指令微调 | 新任务和指令格式 | replay、distillation、LoRA / O-LoRA |
+| 强化学习 | 新偏好或奖励信号 | KL regularization、reference model |
+| 推理部署 | 外部知识或工具 | RAG、tool use、prompt routing |
+
+----
+
+## 汇报组织
+
+1. 经典预训练 scaling law：$N,D,C$ 与 loss
+2. data mixing scaling law：静态多域数据的比例建模
+3. continual pre-training scaling law：新领域动态进入后的比例和停止点
+4. 知识习得与遗忘机制：从知识建模解释持续学习风险
+5. 参考文献
 
 ---
 
-# 规模规律与预算分配
+# 1. 经典 Scaling Law
 
 ----
 
 ## Scaling law 的基本对象
 
-在预训练语境中，scaling law 通常描述：
+在预训练中，scaling law 通常描述：
 
 $$
-\text{controllable resources}
-\quad \longrightarrow \quad
-\text{validation loss or task metric}.
+(N,D,C)\quad\longrightarrow\quad L.
 $$
 
-常见自变量包括：
+其中：
 
-- 参数量 $N$
-- 训练 tokens $D$
-- 训练算力 $C$
-- 数据混合比例 $r$
-- 继续预训练进度 $t$
+- $N$：参数量
+- $D$：训练 tokens
+- $C$：训练算力
+- $L$：验证 loss 或下游指标
 
-<hr>
-
-<red>需要先确认横轴和纵轴，否则公式本身没有可解释性。</red>
+代表工作：**[Scaling Laws for Neural Language Models](https://arxiv.org/abs/2001.08361)**。
 
 ----
 
 ## Kaplan: 分离式幂律
 
-Kaplan et al. 将 $N,D,C$ 分别建模：
+Kaplan et al. 观察到 loss 与资源规模近似满足幂律：
 
 $$
-L(N)=\left(\frac{N_c}{N}\right)^{\alpha_N},\quad
-L(D)=\left(\frac{D_c}{D}\right)^{\alpha_D},\quad
-L(C)=\left(\frac{C_c}{C}\right)^{\alpha_C}.
+L(N)\propto N^{-\alpha_N},\quad
+L(D)\propto D^{-\alpha_D},\quad
+L(C)\propto C^{-\alpha_C}.
 $$
 
-含义：
+核心作用：
 
-- 在固定实验族中，扩大单个资源会带来近似幂律的 loss 下降
-- log-log 坐标中，斜率对应幂律指数
-- 可用于估计扩大规模后的收益
-
-----
-
-## 分离式建模的局限
-
-如果训练算力近似满足：
-
-$$
-C \propto ND,
-$$
-
-那么在固定 $C$ 时，$N$ 和 $D$ 不能独立变化。
-
-- 参数量增大通常意味着可训练 tokens 减少
-- 模型变大可能导致 under-training
-- 单独比较 $N$ 或 $D$ 会掩盖预算分配问题
-
-<hr>
-
-<red>核心限制：分离式公式不能直接回答 compute-optimal allocation。</red>
+- 将训练结果转化为可外推曲线
+- 用小规模实验估计大规模收益
+- 初步回答给定算力下的规模扩展问题
 
 ----
 
 ## Chinchilla: 联合建模 $N$ 和 $D$
 
-Hoffmann et al. 使用联合形式：
+**[Training Compute-Optimal Large Language Models](https://arxiv.org/abs/2203.15556)** 使用联合形式：
 
 $$
 L(N,D)=E+\frac{A}{N^\alpha}+\frac{B}{D^\beta}.
 $$
 
-其中：
+含义：
 
-- $E$：不可约 loss
-- $\frac{A}{N^\alpha}$：模型容量不足带来的损失
-- $\frac{B}{D^\beta}$：训练数据不足带来的损失
-
-<hr>
-
-该公式直接刻画 $N$ 和 $D$ 的共同作用。
+- $\frac{A}{N^\alpha}$：模型容量不足
+- $\frac{B}{D^\beta}$：训练数据不足
+- 固定算力下，$N$ 和 $D$ 需要共同扩展
 
 ----
 
-## 预算分配的结论
+## 对持续学习的限制
 
-在固定算力下，compute-optimal training 不是单纯扩大模型。
+经典 scaling law 主要把数据看作总量 $D$。
 
-更合适的表述是：
+持续学习中，数据还包含分布信息：
 
-- 参数量和 tokens 需要共同扩展
-- 过大的模型如果数据不足，可能不是最优解
-- 实验应覆盖多个 $N,D$ 组合，而不是只报告单一规模点
-
-<hr>
-
-<red>经典 scaling law 的主要作用是指导预算分配，而不是证明某个模型规模本身最优。</red>
-
-----
-
-## 小结
-
-经典 scaling law 提供了一个基础框架：
-
-- 将资源投入与 loss 改善联系起来
-- 用较小规模实验外推较大规模训练
-- 分析模型规模和数据规模的相对瓶颈
+- 新领域数据比例
+- 通用数据 replay 比例
+- 高质量数据占比
+- 数据重复次数
+- 训练阶段和停止点
 
 <hr>
 
-但它的纵轴通常是平均 loss。对于知识获取、数据来源和继续预训练，这个指标仍然不够。
+因此需要将变量从 $D$ 扩展到 $(D,r,t)$。
 
 ---
 
-# 数据分布与知识覆盖
+# 2. Data Mixing Scaling Law
 
 ----
 
-## 平均 loss 之外的问题
+## Data mixing 多数是静态设定
 
-平均 loss 可以衡量整体预测误差，但不直接回答：
+data mixing scaling law 多数研究静态问题：
 
-- 某类事实知识是否被模型覆盖
-- 低频知识是否跨过可学习阈值
-- 不同数据来源对目标能力的边际贡献
+- 候选数据源在预训练前已经确定
+- 训练前选择固定 mixture
+- 预测不同比例下的验证表现
 
-<hr>
+这与持续预训练不同：
 
-因此，data mixing 的问题不能只用总 tokens $D$ 表示。
+- 初始点不是随机模型，而是已有 checkpoint
+- 新领域数据在后续阶段进入
+- 还要约束旧能力退化
 
-----
-
-## 知识频率与长尾覆盖
-
-一种抽象方式是将知识单元按频率排序：
-
-$$
-p_k \propto k^{-s}.
-$$
-
-其中 $p_k$ 表示第 $k$ 个知识单元在训练分布中的出现频率。
-
-含义：
-
-- 高频知识更容易被覆盖
-- 低频知识需要更多有效暴露
-- 平均 loss 的平滑下降可能对应知识单元级别的阈值现象
+> data mixing 是 CPT 的基础问题，但不是完整的 CPT 问题。
 
 ----
 
-## Data mixing 的变量
+## 基本符号
 
-真实预训练数据通常来自多个来源：
+设训练数据来自 $K$ 个来源：
 
 $$
 r=(r_1,\ldots,r_K),\quad
-r_i\ge 0,\quad
-\sum_i r_i=1.
+r_i\ge 0,\quad \sum_i r_i=1.
 $$
 
-这里 $r_i$ 是第 $i$ 类数据的采样比例。
-
-此时训练数据不再只是标量 $D$，而是：
+总训练量为 $D$，第 $i$ 个来源的训练量为：
 
 $$
-(D,r).
+D_i=r_iD.
 $$
 
-<hr>
+验证 loss 可按验证域写为：
 
-<red>数据规模决定训练量，混合比例决定训练分布。</red>
+$$
+L_j(N,D,r),
+$$
+
+其中 $j$ 表示第 $j$ 个验证域。
 
 ----
 
-## 目标知识的有效暴露
+## Data mixing 的目标
 
-设某类目标知识在来源中的出现概率为 $p$，该来源采样比例为 $r$。
-
-有效暴露强度与 $rp$ 相关。一类阈值形式可写为：
+data mixing 要选择训练采样比例 $r^*$。在固定模型规模和训练预算下：
 
 $$
-M_{\mathrm{thres}}
-\sim
-\left(\frac{1}{rp}\right)^{1/(\alpha+1)}.
+r^*=\arg\min_{r\in\Delta^{K-1}} J_{\mathrm{val}}(r),
+\quad
+J_{\mathrm{val}}(r)=\sum_j s_j L_j(N,D,r).
 $$
 
-含义：
+其中：
 
-- 当 $r$ 很低时，目标知识需要更大规模才可能被学习
-- 提高来源比例会降低所需规模阈值
-- 目标知识的频率和来源比例都影响知识获取
+- $J_{\mathrm{val}}(r)$：加权验证目标
+- $L_j$：第 $j$ 个验证域上的 loss
+- $s_j$：第 $j$ 个验证域的权重
+- $r_i$：第 $i$ 个数据源采样比例
 
 ----
 
-## 训练分布与自然分布
+## 同一目标下的方法层级
 
-最优训练分布未必等于数据的自然分布。
+这些工作同属“选数据比例”问题，但处在不同层级：
 
-一类理论结果给出：
+| 层级 | 问题 | 代表工作 |
+|---|---|---|
+| 预测目标 | 估计 $r\rightarrow L_j(r)$ 或 $r\rightarrow J_{\mathrm{val}}(r)$ | Data Mixing Laws, RegMix, BiMix |
+| 选择比例 | 不拟合完整 $L(r)$，直接得到采样比例 | DoReMi |
+| 扩展变量 | 加入质量、重复率和有效信息量 | InfoLaw |
 
-$$
-q_i^\star \propto p_i^{1/(\alpha+1)}.
-$$
-
-当 $1/(\alpha+1)<1$ 时：
-
-- 高频来源的权重相对降低
-- 低频来源的权重相对提高
-- 训练分布比自然分布更均衡
-
-<hr>
-
-<red>数据配比可以被视为优化变量，而不是固定的数据描述。</red>
+> 共同点是选择数据比例；差别在估计方式。
 
 ----
 
-## 方法谱系
+## 各工作在问题中的位置
 
-| 方法 | 建模对象 | 输出 |
-|---|---:|---:|
-| DoReMi | proxy model 上的 domain loss | 域权重 |
-| Data Mixing Laws | 混合比例与 loss | ratio-loss 曲线 |
-| RegMix / BiMix | 多域混合回归 | 预算下的比例选择 |
-| InfoLaw | 有效信息量 | 知识覆盖与重复收益 |
+| 工作 | 方法 | 输出 |
+|---|---|---|
+| DoReMi | proxy model + Group DRO | 采样比例 $r$ |
+| Data Mixing Laws | 解析式估计 $\hat L_j(r)$ | $r^*$ |
+| RegMix | 回归器估计 $\hat y(r)$ | $r^*$ |
+| BiMix | 估计 $\hat L_i(r_i,D)$ | $r^*$ |
+| InfoLaw | 估计有效信息量 | 扩展目标 |
 
-<hr>
-
-共同目标是用小规模实验或代理模型估计不同来源的边际收益。
+InfoLaw 不只是 ratio 方法；它把质量和重复率纳入数据选择问题。
 
 ----
 
-## 小结
+## DoReMi: proxy model 产生采样比例
 
-data mixing 将 scaling law 的变量从 $D$ 扩展为 $(D,r)$。
+**[DoReMi: Optimizing Data Mixtures Speeds Up Language Model Pretraining](https://arxiv.org/abs/2305.10429)** 不是显式 scaling law，但它给出一种低成本配比估计方法。
 
-需要同时考虑：
+核心思想：
 
-- 数据来源的规模
-- 数据来源的质量
-- 目标知识在来源中的频率
-- 不同来源之间的权衡
+- 先训练 reference model
+- 再用 proxy model 做 Group DRO
+- loss 相对 reference 更高的数据源会被提高权重
+- 将得到的比例用于大模型预训练
 
-<hr>
+----
 
-<red>这一层问题的核心是训练分布，而不是单纯的数据总量。</red>
+## DoReMi: 优化目标
+
+简化目标：
+
+$$
+\min_\theta \max_\alpha
+\sum_i \alpha_i
+\mathbb{E}_{x\sim D_i}
+\left[\ell_\theta(x)-\ell_{\mathrm{ref}}(x)\right].
+$$
+
+这里 $\alpha_i$ 是 Group DRO 给第 $i$ 个数据来源的权重。
+
+它不是对大模型 loss 曲线的预测，而是用于构造最终采样比例。
+
+----
+
+## Data Mixing Laws: mixture 到 domain loss
+
+**[Data Mixing Laws](https://arxiv.org/abs/2403.16952)** 直接建模 mixture 与验证域 loss 的关系：
+
+$$
+L_i(r_1,\ldots,r_M)
+=c_i+k_i\exp\left(\sum_j t_{ij}r_j\right).
+$$
+
+符号含义：
+
+- $L_i$：第 $i$ 个验证域上的 loss
+- $r_j$：第 $j$ 个训练数据来源的比例
+- $t_{ij}$：训练来源 $j$ 对验证域 $i$ 的影响
+- $c_i,k_i$：拟合常数
+
+该工作还将 mixture law 与 step scaling 和 model-size scaling 组合，用小规模实验预测大规模 mixture。
+
+----
+
+## RegMix: 用回归预测比例效果
+
+**[RegMix: Data Mixture as Regression for Language Model Pre-training](https://arxiv.org/abs/2407.01492)** 不预设解析公式，而是学习：
+
+$$
+y=f(r_1,\ldots,r_K)+\epsilon.
+$$
+
+其中：
+
+- $y$：目标 loss 或下游指标
+- $f$：回归模型
+- $r$：数据来源比例
+
+它先训练许多小模型，得到样本 $(r,y)$，再用回归模型预测未训练比例的效果。
+
+----
+
+## BiMix: 比例和训练时长一起建模
+
+**[Data Mixing Made Efficient: A Bivariate Scaling Law for Language Model Pretraining](https://arxiv.org/abs/2405.14908)** 将单域 loss 写成比例和训练步数的函数：
+
+$$
+L_i(r_i,s)
+=
+\frac{A_i}{r_i^{\alpha_i}}
+\left(\frac{B_i}{s^{\beta_i}}+C_i\right).
+$$
+
+其中：
+
+- $r_i$：第 $i$ 个数据来源比例
+- $s$：训练步数或等价训练进度
+- $A_i,B_i,C_i,\alpha_i,\beta_i$：待拟合参数
+
+含义：选择数据比例时不能忽略训练时长。
+
+----
+
+## InfoLaw: 质量和重复
+
+**[InfoLaw](https://arxiv.org/abs/2605.02364)** 关注质量加权数据和重复训练。
+
+主要变量：
+
+- 数据质量：影响单位 token 的信息量
+- 重复次数：影响边际收益
+- 模型规模：影响重复数据的可用程度
+
+结论：
+
+- 高质量数据上采样有收益
+- 重复数据收益会衰减
+- 小模型或小预算更偏向高质量
+- 大模型或大预算更依赖多样性
+
+----
+
+## 与持续学习的关系
+
+data mixing 工作通常假设数据源在预训练前已知。
+
+持续预训练可以看成一个动态版本：
+
+$$
+r=(r_{\mathrm{new}},r_{\mathrm{replay}},r_{\mathrm{other}}).
+$$
+
+区别在于：
+
+- 初始点不是随机模型，而是已有 checkpoint
+- 目标不是单一平均 loss，而是 domain/general trade-off
+- $r_{\mathrm{replay}}$ 直接影响遗忘
+- 停止点 $t$ 也需要建模
 
 ---
 
-# 继续预训练中的收益与遗忘
+# 3. Continual Pre-training Scaling Law
 
 ----
 
-## CPT 与从零预训练的差别
+## CPT 中的新领域进入方式
 
-从零预训练：
-
-$$
-\theta_{\mathrm{random}} \rightarrow \theta_{\mathrm{pretrain}}.
-$$
-
-继续预训练：
+继续预训练从已有模型开始：
 
 $$
-\theta_0 \rightarrow \theta_{\mathrm{CPT}}.
+\theta_{\mathrm{pt}}
+\rightarrow
+\theta_{\mathrm{cpt}}.
 $$
 
-差别在于 $\theta_0$ 已经包含通用能力。
+新领域数据进入后，训练集可以写为：
 
-因此 CPT 需要同时评估：
+$$
+D_{\mathrm{cpt}}
+=
+D_{\mathrm{new}}
+\cup
+D_{\mathrm{replay}}.
+$$
 
-- 领域能力提升
-- 通用能力保持
-- 指令遵循和输出格式稳定性
+关键比例：
+
+$$
+r_{\mathrm{new}}
+=
+\frac{|D_{\mathrm{new}}|}
+{|D_{\mathrm{new}}|+|D_{\mathrm{replay}}|}.
+$$
 
 ----
 
-## 不能只报告领域指标
+## CPT 的目标
 
-仅报告 domain benchmark 可能不足以判断 CPT 是否有效。
+CPT 不是单目标优化。一个常见形式是：
 
-需要同时观察：
+$$
+\min_{D,r,t,\eta} L_{\mathrm{dom}}(\theta_t)
+$$
 
-- domain validation loss
-- general validation loss
-- general benchmark
-- instruction following
-- reasoning / reading comprehension
+$$
+\text{s.t.}\quad
+L_{\mathrm{gen}}(\theta_t)-L_{\mathrm{gen}}(\theta_0)\le \epsilon.
+$$
 
-<hr>
+变量包括：
 
-<red>CPT 的评价目标天然是多目标的。</red>
+- $D$：CPT tokens
+- $r$：领域数据比例或 replay 比例
+- $t$：训练时长或 checkpoint
+- $\eta$：learning rate schedule
 
 ----
 
-## 遗忘的梯度解释
+## 与 data mixing 的关系
 
-新任务一步更新后，旧任务 loss 的一阶变化近似为：
+| 问题 | data mixing | CPT scaling law |
+|---|---|---|
+| 初始模型 | 随机初始化或从头训练 | 已有 checkpoint |
+| 数据进入方式 | 训练前已知 | 新领域后续进入 |
+| 主要变量 | $N,D,r$ | $N,D,r,t,\eta$ |
+| 目标 | 平均 loss 或下游指标 | 领域收益 + 通用保持 |
+| 风险 | 配比不优 | 灾难性遗忘 |
+
+因此 CPT scaling law 不是替代 data mixing，而是将 data mixing 放入持续学习约束中。
+
+----
+
+## D-CPT Law
+
+**[D-CPT Law: Domain-specific Continual Pre-Training Scaling Law for Large Language Models](https://arxiv.org/abs/2406.01375)** 将领域比例放入 scaling law：
+
+$$
+L(N,D,r)
+=E+\frac{A}{N^\alpha}
++\frac{B r^\eta}{D^\beta}
++\frac{C}{(r+\epsilon)^\gamma}.
+$$
+
+其中：
+
+- $N$：模型规模
+- $D$：CPT 数据量
+- $r$：当前验证域对应语料比例
+- $L$：对应验证域上的 loss
+
+领域 loss 使用 $r_{\mathrm{dom}}$；通用 loss 使用 $r_{\mathrm{gen}}$。
+
+----
+
+## CMR Scaling Law
+
+**[CMR Scaling Law: Predicting Critical Mixture Ratios for Continual Pre-training of Language Models](https://arxiv.org/abs/2407.17467)** 直接建模临界领域比例：
+
+$$
+R=\frac{|D_{\mathrm{dom}}|}
+{|D_{\mathrm{gen}}|+|D_{\mathrm{dom}}|}.
+$$
+
+临界比例 $R_{\mathrm{CMR}}$ 满足：
+
+$$
+L_{\mathrm{gen}}^{\mathrm{CPT}}\le L_{\mathrm{gen}}+\epsilon,
+\quad
+L_{\mathrm{dom}}^{\mathrm{CPT}}<L_{\mathrm{dom}}.
+$$
+
+即：在通用能力退化不超过阈值时，领域比例尽可能高。
+
+----
+
+## CPT Learning Dynamics
+
+**[Learning Dynamics in Continual Pre-Training for Large Language Models](https://arxiv.org/abs/2505.07796)** 关注整条训练曲线，而不是只预测最终 loss：
+
+$$
+L_{\mathrm{CPT}}(t)
+=
+L_{\mathrm{hidden\ PT}}(S_1,S_2)
++\Delta_{\mathrm{shift}}(S_1^{\mathrm{CPT}},r).
+$$
+
+其中：
+
+- $S_1$：learning rate 累计面积
+- $S_2$：annealing area
+- $\Delta_{\mathrm{shift}}$：分布转移项
+
+它将训练步数、学习率日程、replay 比例和 loss curve 联系起来。
+
+----
+
+## 三类 CPT law 的关系
+
+| 工作 | 主要问题 | 与 data mixing 的关系 |
+|---|---|---|
+| D-CPT | 给定 $N,D,r$，预测 domain/general loss | 将 mixture ratio 放入 CPT loss 公式 |
+| CMR | 找到不破坏通用能力的最大领域比例 | 将 ratio-loss 曲线转化为约束阈值 |
+| Learning Dynamics | 预测训练过程中的 loss curve | 在 mixture 基础上加入 $t$ 和 LR schedule |
+
+共同点：都把 $r$ 作为关键变量，并同时观察领域指标和通用指标。
+
+---
+
+# 4. 知识习得与遗忘机制
+
+----
+
+## 本节结构
+
+本节只讨论两件事：
+
+1. 知识如何被建模和习得
+2. 如何用这些建模解释持续学习中的遗忘
+
+持续学习方法已经在训练流程中说明，不作为本节主体。
+
+----
+
+## 知识频率与容量
+
+**[The Quantization Model of Neural Scaling](https://arxiv.org/abs/2303.13506)** 将模型能力解释为离散知识或技能单元：
+
+- 高频单元更早被学习
+- 低频单元需要更多 exposure
+- 模型容量限制可学习单元数量
+- 幂律 loss 可由知识频率分布解释
+
+持续学习含义：
+
+<red>新领域数据改变知识频率分布，旧知识如果缺少 replay，可能低于保持阈值。</red>
+
+----
+
+## 压缩视角
+
+**[Understanding LLM Behaviors via Compression](https://arxiv.org/abs/2504.09597)** 将 LLM 训练解释为两部分压缩：
+
+- syntax：高频格式、语法、模板
+- knowledge：事实、实体、关系、长尾知识
+
+该文提出 Syntax-Knowledge model，用来解释：
+
+- scaling law
+- 知识习得顺序
+- hallucination
+- fine-tuning 中的遗忘
+
+> 遗忘不只来自新旧知识冲突，也可能来自新格式带来的语法开销。
+
+----
+
+## Syntax-Knowledge: 学习速度不同
+
+在该模型中，fine-tuning 的收益可分为：
+
+- syntax redundancy：学习新格式或新风格
+- knowledge redundancy：注入新事实或新知识
+
+两者学习速度不同：
+
+$$
+\text{syntax redundancy}: O(n^{-1})
+$$
+
+$$
+\text{knowledge redundancy}: O(n^{\alpha-1})
+$$
+
+含义：格式适配通常很快，知识注入较慢。
+
+----
+
+## Syntax-Knowledge: 遗忘机制
+
+持续学习中的遗忘来自容量竞争：
+
+- 模型容量有限
+- 新领域数据可能引入新语法或新格式
+- 学习新语法会占用容量
+- 当模型接近容量上限时，旧知识更容易被挤出
+
+这解释了 SFT 与 CPT 的差异：
+
+| 方式 | 数据形式 | 遗忘风险 |
+|---|---|---|
+| SFT | 指令-回答模板 | 语法偏离更大 |
+| CPT | 自然文本续训 | 更接近预训练分布 |
+
+> 在容量接近饱和时，CPT 通常比 SFT 更有利于保留旧知识。
+
+----
+
+## 有效暴露
+
+知识学习不只取决于重复次数。
+
+相关工作：
+
+- **[Physics of Language Models: Part 3.1](https://arxiv.org/abs/2309.14316)**：token 记忆不等于知识可抽取
+- **[How Do LLMs Acquire Factual Knowledge During Pretraining?](https://arxiv.org/abs/2406.11813)**：事实知识通过多次 encounter 累积
+- **[How do language models learn facts?](https://arxiv.org/abs/2503.21676)**：事实学习存在阶段性
+
+持续学习含义：replay 的作用不仅是增加旧数据比例，也是控制旧知识的再暴露间隔。
+
+----
+
+## Circuit 与表示漂移
+
+**[Knowledge Circuits in Pretrained Transformers](https://arxiv.org/abs/2405.17969)** 从 circuit 层面分析知识表达。
+
+持续学习中需要关注：
+
+- 知识分布在多个 attention head 和 MLP 组件中
+- 新知识更新可能改变共享表示
+- benchmark 保持不代表表示完全稳定
+- fine-tuning、replay、editing 对表示的影响不同
+
+----
+
+## 从知识建模解释遗忘
+
+新领域进入训练后，旧知识可能被削弱，原因包括：
+
+| 机制 | 对应解释 |
+|---|---|
+| 频率变化 | 旧知识在训练分布中的有效比例下降 |
+| 暴露间隔变长 | 旧知识缺少再暴露，保持强度下降 |
+| 容量竞争 | 新知识占用有限参数或 circuit |
+| 表示漂移 | 旧知识仍在参数中，但不易被原方式抽取 |
+
+这说明遗忘不一定是旧知识完全消失，也可能是可访问性下降。
+
+----
+
+## 梯度冲突解释
+
+新任务一步更新后，旧任务 loss 的一阶变化：
 
 $$
 \Delta L_{\mathrm{old}}
@@ -343,165 +694,92 @@ $$
 
 如果梯度点积为负，新任务更新会增加旧任务 loss。
 
-这解释了 replay、regularization、gradient projection 等方法的共同动机：
-
-- 保留旧任务约束
-- 限制参数移动
-- 减少任务间梯度冲突
+代表工作：**[Gradient Episodic Memory for Continual Learning](https://arxiv.org/abs/1706.08840)**。
 
 ----
 
-## D-CPT Law
+## 参数重要性与容量干扰
 
-一种代表性形式将领域比例 $r$ 放入公式：
-
-$$
-L(N,D,r)
-=
-E+\frac{A}{N^\alpha}
-+\frac{B r^\eta}{D^\beta}
-+\frac{C}{(r+\epsilon)^\gamma}.
-$$
-
-其中：
-
-- $N$：模型规模
-- $D$：CPT tokens
-- $r$：领域数据比例
-
-该公式用于估计达到目标领域 loss 所需的数据规模和混合比例。
-
-----
-
-## 临界混合比例
-
-CMR scaling law 关注领域数据比例的临界点：
+**[Overcoming catastrophic forgetting in neural networks](https://arxiv.org/abs/1612.00796)** 使用 Fisher 信息保护旧任务重要参数：
 
 $$
-R_{\mathrm{CMR}} = aT^s + b.
+\frac{\lambda}{2}\sum_i F_i(\theta_i-\theta_i^\star)^2.
 $$
 
-其中 $T$ 是 CPT tokens，$R_{\mathrm{CMR}}$ 是 critical mixture ratio。
+**[Why Larger Models Learn More: Effects of Capacity, Interference, and Rare-Task Retention](https://arxiv.org/abs/2605.29548)** 强调：
 
-含义：
-
-- 领域比例过低时，领域收益有限
-- 领域比例过高时，通用能力退化风险增加
-- 最优比例依赖训练时长和数据组成
-
-----
-
-## 训练阶段的影响
-
-CPT 的过程也需要建模。
-
-常见现象包括：
-
-- 早期存在迁移收益
-- 中期领域 loss 明显下降
-- 后期通用能力退化风险增加
-
-因此实验中应报告多个 checkpoint，而不是只报告最终模型。
-
-<hr>
-
-<red>训练阶段 $t$ 本身也是 CPT scaling law 中的重要变量。</red>
-
-----
-
-## 小结
-
-CPT scaling law 需要同时建模：
-
-- 模型规模 $N$
-- CPT tokens $D$
-- 领域数据比例 $r$
-- 训练阶段 $t$
-- domain/general 两类指标
-
-<hr>
-
-与从零预训练相比，CPT 的核心约束是领域收益与已有能力保持之间的权衡。
+- 小模型更容易出现容量竞争
+- 稀有任务更容易被高频任务更新覆盖
+- 更大模型有更强的稀有任务保持能力
 
 ---
 
-# 实验设计与结果汇报
+# 参考文献
 
 ----
 
-## 最小实验矩阵
+## Scaling Laws and Data Mixing
 
-| 实验轴 | 建议设置 | 目的 |
-|---|---:|---|
-| model size | 2-3 个 scale | 估计外推斜率 |
-| total tokens | 2-3 个预算 | 区分容量瓶颈与数据瓶颈 |
-| mix ratio | 4-6 个比例 | 观察阈值和拐点 |
-| checkpoint | 多个阶段 | 分析收益与遗忘动态 |
-| eval set | domain + general | 评估 trade-off |
+<div class="refs-small">
 
-<hr>
+- **[Scaling Laws for Neural Language Models](https://arxiv.org/abs/2001.08361)**, 2020
+- **[Training Compute-Optimal Large Language Models](https://arxiv.org/abs/2203.15556)**, 2022
+- **[DoReMi](https://arxiv.org/abs/2305.10429)**, 2023
+- **[Data Mixing Laws](https://arxiv.org/abs/2403.16952)**, 2024/2025
+- **[RegMix](https://arxiv.org/abs/2407.01492)**, 2024/2025
+- **[Data Mixing Made Efficient](https://arxiv.org/abs/2405.14908)**, 2024
+- **[InfoLaw](https://arxiv.org/abs/2605.02364)**, 2026
 
-实验点的设计应服务于拟合和外推，而不只是报告单次训练结果。
-
-----
-
-## 拟合与外推的边界
-
-报告 scaling law 时，需要明确：
-
-- 模型架构和 tokenizer 是否一致
-- 数据去重与 contamination 处理
-- optimizer、learning rate schedule 和 batch size
-- proxy model 与目标模型之间的差异
-- held-out evaluation 是否覆盖目标能力
-
-<hr>
-
-<red>缺少边界条件时，scaling law 不能可靠用于预算决策。</red>
+</div>
 
 ----
 
-## 结果呈现建议
+## Continual Pre-training
 
-结果不应只给最终表格。
+<div class="refs-small">
 
-更有信息量的呈现包括：
+- **[Continual Learning of Large Language Models](https://arxiv.org/abs/2404.16789)**, 2024
+- **[D-CPT Law](https://arxiv.org/abs/2406.01375)**, 2024
+- **[CMR Scaling Law](https://arxiv.org/abs/2407.17467)**, 2024
+- **[Learning Dynamics in Continual Pre-Training](https://arxiv.org/abs/2505.07796)**, 2025
+- **[Simple and Scalable Strategies to Continually Pre-train LLMs](https://arxiv.org/abs/2403.08763)**, 2024
+- **[Scaling Data-Constrained Language Models](https://arxiv.org/abs/2305.16264)**, 2023/2025
+- **[Don’t Stop Pretraining](https://arxiv.org/abs/2004.10964)**, 2020
 
-- loss vs. scale 曲线
-- loss vs. mixture ratio 曲线
-- domain/general 指标随 checkpoint 的变化
-- 不同数据来源的边际收益
-- 外推点与实际训练点的误差
-
-<hr>
-
-这样可以判断公式是在解释现有结果，还是确实具有预测能力。
+</div>
 
 ----
 
-## 总结
+## Knowledge and Forgetting
 
-本次汇报的结论：
+<div class="refs-small">
 
-- 经典 scaling law 主要解决规模扩展和预算分配问题
-- data mixing 将变量从数据总量扩展到数据分布
-- CPT scaling law 需要同时考虑领域收益和通用能力保持
-- 实验设计应围绕可拟合、可外推、可验证的曲线展开
+- **[The Quantization Model of Neural Scaling](https://arxiv.org/abs/2303.13506)**, 2023
+- **[Understanding LLM Behaviors via Compression](https://arxiv.org/abs/2504.09597)**, 2025
+- **[Physics of Language Models: Part 3.1](https://arxiv.org/abs/2309.14316)**, 2023
+- **[How Do LLMs Acquire Factual Knowledge During Pretraining?](https://arxiv.org/abs/2406.11813)**, 2024
+- **[How do language models learn facts?](https://arxiv.org/abs/2503.21676)**, 2025
+- **[Knowledge Circuits in Pretrained Transformers](https://arxiv.org/abs/2405.17969)**, 2024
+- **[Why Larger Models Learn More](https://arxiv.org/abs/2605.29548)**, 2026
 
-<hr>
-
-<red>后续预训练决策应同时回答：训练多少、采样什么、按什么比例、何时停止。</red>
+</div>
 
 ----
 
-## 参考文献
+## Continual Learning Methods
 
-- Kaplan et al., *Scaling Laws for Neural Language Models*, 2020.
-- Hoffmann et al., *Training Compute-Optimal Large Language Models*, 2022.
-- Michaud et al., *The Quantization Model of Neural Scaling*, 2023.
-- Data mixing / domain reweighting: DoReMi, RegMix, Data Mixing Laws.
-- Continual learning: GEM, EWC, replay, gradient projection.
-- Continual pre-training: D-CPT Law, CMR Scaling Law, Learning Dynamics in CPT.
+<div class="refs-small">
+
+- **[Gradient Episodic Memory](https://arxiv.org/abs/1706.08840)**, 2017
+- **[Overcoming catastrophic forgetting](https://arxiv.org/abs/1612.00796)**, 2017
+- **[Learning without Forgetting](https://arxiv.org/abs/1606.09282)**, 2016
+- **[LAMOL](https://arxiv.org/abs/1909.03329)**, 2019
+- **[Catastrophic Forgetting in LLM Continual Fine-tuning](https://arxiv.org/abs/2308.08747)**, 2023
+- **[Self-Synthesized Rehearsal](https://arxiv.org/abs/2403.01244)**, 2024
+- **[InsCL](https://arxiv.org/abs/2403.11435)**, 2024
+- **[Self-Distillation Enables Continual Learning](https://arxiv.org/abs/2601.19897)**, 2026
+
+</div>
 
 ---
 layout: center

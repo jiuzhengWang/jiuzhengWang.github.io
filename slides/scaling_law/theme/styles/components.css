@@ -72,6 +72,78 @@
   margin-bottom: 0;
 }
 
+.training-flow {
+  display: flex;
+  align-items: stretch;
+  gap: 10px;
+  width: calc(100% - 50px);
+  margin: 26px 25px 18px;
+}
+
+.flow-stage {
+  display: flex;
+  flex: 1 1 0;
+  min-width: 0;
+  flex-direction: column;
+  justify-content: center;
+  padding: 14px 10px;
+  border: 1.5px solid var(--pku-line);
+  border-radius: 6px;
+  background: #fff;
+  text-align: center;
+}
+
+.flow-stage strong {
+  display: block;
+  color: var(--pku-ink);
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.flow-stage span {
+  display: block;
+  margin-top: 8px;
+  color: var(--pku-muted);
+  font-size: 19px;
+  line-height: 1.25;
+}
+
+.flow-stage.flow-focus {
+  border-color: var(--pku-primary);
+  background: rgba(148, 7, 10, 0.055);
+}
+
+.flow-stage.flow-focus strong {
+  color: var(--pku-primary);
+}
+
+.flow-arrow {
+  display: flex;
+  flex: 0 0 20px;
+  align-items: center;
+  justify-content: center;
+  color: var(--pku-primary);
+  font-size: 26px;
+  line-height: 1;
+}
+
+.refs-small ul {
+  margin-top: 0.2em;
+  margin-bottom: 0;
+}
+
+.refs-small li,
+.refs-small p {
+  font-size: 24px;
+  line-height: 1.22;
+}
+
+.refs-small li,
+.refs-small li + li {
+  margin-top: 8px;
+}
+
 .pku-reveal-controls {
   position: fixed;
   top: auto;
