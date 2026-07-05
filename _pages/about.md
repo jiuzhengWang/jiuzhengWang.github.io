@@ -2,7 +2,7 @@
 layout: about
 title: about
 permalink: /
-subtitle: 
+subtitle: Systems / Compilers / AI Infrastructure
 
 profile:
   align: right
